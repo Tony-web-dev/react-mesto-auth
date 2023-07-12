@@ -9,6 +9,8 @@ import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup.jsx";
 import AddPlacePopup from "./AddPlacePopup/AddPlacePopup.jsx";
 import ImagePopup from "./ImagePopup/ImagePopup.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
+import { authentication, authorization, getUserAuth } from "../utils/auth.js";
+import { useNavigate } from "react-router-dom";
 
 export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -19,9 +21,14 @@ export default function App() {
   const [isRemoveCardPopupOpen, setIsRemoveCardPopupOpen] = useState(false);
   const [isDeletedCard, setIsDeletedCard] = useState('');
   const [currentUser, setCurrentUser] = useState({});
+  const [loggedUser, setLoggedUser] = useState('');
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isFail, setIsFail] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true)
@@ -153,6 +160,49 @@ export default function App() {
       console.log(err);
     });
   }
+
+function handleLogin(email, password) {
+  setIsSending(true);
+  authorization(email, password)
+  .then(res => {
+    localStorage.setItem('jwt', res.token)
+    setIsLogged(true)
+    navigate('/')
+  })
+  .catch(err => {
+    setIsFail();
+    console.log(err);
+  })
+  .finally(() => setIsSending(false))
+}
+
+function handleRegister(email, password) {
+  setIsSending(true);
+  authentication(email, password)
+  .then(res => {
+    setIsSuccess(true)
+    navigate('/sign-in')
+  })
+  .catch(err => {
+    setIsFail();
+    console.log(err);
+  })
+  .finally(() => setIsSending(false))
+}
+
+  useEffect(() => {
+    if(localStorage.jvt) {
+      getUserAuth(localStorage.jvt)
+      .then(res => {
+        setLoggedUser(res.data.email)
+        setIsLogged(true)
+        navigate('/')
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+  })
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

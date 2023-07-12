@@ -4,6 +4,7 @@ export default function Header() {
   return (
     <header className="header">
       <img className="header__logo" src={logo} alt="Логотип" />
+      <a href="#" className="header__link">Регистрация</a>
     </header>
   );
 }
