@@ -23,7 +23,7 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace, isSending }
       onSubmit={handleSubmit}
       isSending={isSending}
     >
-      <label className="form__field">
+      <label className="form__label">
         <input
           type="text"
           className="form__input"
@@ -38,7 +38,7 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace, isSending }
         />
         <span className="form__message-error">{errors.heading}</span>
       </label>
-      <label className="form__field">
+      <label className="form__label">
         <input
           type="url"
           className="form__input"

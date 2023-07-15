@@ -5,11 +5,11 @@ import Loader from "../Loader/Loader.jsx"
 import Login from "../Login/Login.jsx";
 import Register from "../Register/Register.jsx";
 
-export default function Main({ name, cards, onEditProfile, onEditAvatar, onAddPlace, onCardClick, onCardLike, onCardDelete, isLoading, handleRegister, handleLogin }) {
+export default function Main({ name, cards, onEditProfile, onEditAvatar, onAddPlace, onCardClick, onCardLike, onCardDelete, isLoading, handleRegister, handleLogin, isSending }) {
   const currentUser = useContext(CurrentUserContext);
  
   return (
-    <main className="content">
+    <main className='content'>
       {name === 'content' ? 
         <>
           <section className="profile">
@@ -60,9 +60,15 @@ export default function Main({ name, cards, onEditProfile, onEditAvatar, onAddPl
         </>
         :
         name === 'signup' ? 
-        <Register handleRegister={handleRegister} />
+        <Register
+        handleRegister={handleRegister}
+        isSending={isSending}
+        />
         :
-        <Login handleLogin={handleLogin} />
+        <Login
+        handleLogin={handleLogin}
+        isSending={isSending}
+        />
       }
     </main>
   );

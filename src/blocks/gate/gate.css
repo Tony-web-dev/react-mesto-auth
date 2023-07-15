@@ -1,5 +1,12 @@
 .gate {
     display: block;
     padding-top: 60px;
-    width: 100%;
+    width: 430px;
+    color: #fff;
+}
+
+@media screen and (max-width: 620px) {
+    .gate {
+        width: 282px;
+    }
 }

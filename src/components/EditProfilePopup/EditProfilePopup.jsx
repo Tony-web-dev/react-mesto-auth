@@ -30,7 +30,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isSend
       onSubmit={handleSubmit}
       isSending={isSending}
     >
-      <label className="form__field">
+      <label className="form__label">
         <input
           type="text"
           className="form__input"

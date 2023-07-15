@@ -24,7 +24,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isSen
       onSubmit={handleSubmit}
       isSending={isSending}
     >
-      <label className="form__field">
+      <label className="form__label">
         <input
           ref={input}
           type="url"
