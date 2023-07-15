@@ -28,7 +28,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isFail, setIsFail] = useState(false);
+  const [isLoginResPopup, setIsLoginResPopup] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const navigate = useNavigate();
 
@@ -81,8 +81,7 @@ export default function App() {
     setIsAddPlacePopupOpen(false);
     setIsImagePopup(false);
     setIsRemoveCardPopupOpen(false);
-    setIsSuccess(false);
-    setIsFail(false)
+    setIsLoginResPopup(false)
   }
 
   function handleCardClick(item) {
@@ -177,7 +176,8 @@ function handleLogin(email, password) {
     navigate('/')
   })
   .catch(err => {
-    setIsFail(true);
+    setIsLoginResPopup(true);
+    setIsSuccess(false);
     console.log(err);
   })
   .finally(() => setIsSending(false))
@@ -187,19 +187,22 @@ function handleRegister(email, password) {
   setIsSending(true);
   authentication(email, password)
   .then(res => {
+    setIsLoginResPopup(true)
     setIsSuccess(true)
     navigate('/sign-in')
   })
   .catch(err => {
-    setIsFail(true);
+    setIsLoginResPopup(true);
+    setIsSuccess(false);
     console.log(err);
   })
   .finally(() => setIsSending(false))
 }
 
   useEffect(() => {
-    if(localStorage.jwt) {
-      getUserAuth(localStorage.jwt)
+    const jwt = localStorage.jwt;
+    if(jwt) {
+      getUserAuth(jwt)
       .then(res => {
         setLoggedUser(res.data.email)
         setIsLogged(true)
@@ -217,9 +220,10 @@ function handleRegister(email, password) {
 
         <Routes>
           <Route path="/" element={
-            <ProtectedRoute
-              loggedUser={loggedUser}
-              isLogged={isLogged}
+            <ProtectedRoute isLogged={isLogged}>
+              <Header loggedUser={loggedUser} />
+              <Main
+              name="content"
               cards={cards}
               onEditProfile={handleEditProfileClick}
               onEditAvatar={handleEditAvatarClick}
@@ -227,9 +231,10 @@ function handleRegister(email, password) {
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}
               onCardDelete ={handleRemoveCardClick}
-              isLoading={isLoading}
-            />
-          } />
+              isLoading={isLoading} 
+              />
+            </ProtectedRoute>
+              } />
           <Route path="/sign-up" element={
             <>
               <Header name="signup" />
@@ -284,15 +289,8 @@ function handleRegister(email, password) {
         />
 
         <InfoTooltip
-          name="success"
-          titleText={"Вы успешно зарегистрировались!"}
-          isOpen={isSuccess}
-          onClose={closeAllPopups}
-        />
-        <InfoTooltip
-          name="fail"
-          titleText={"Что-то пошло не так! Попробуйте ещё раз."}
-          isOpen={isFail}
+          isSuccess={isSuccess}
+          isOpen={isLoginResPopup}
           onClose={closeAllPopups}
         />
 
