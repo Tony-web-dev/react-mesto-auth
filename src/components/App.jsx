@@ -217,11 +217,11 @@ function handleRegister(email, password) {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
+        <Header loggedUser={loggedUser} />
 
         <Routes>
           <Route path="/" element={
-            <ProtectedRoute isLogged={isLogged}>
-              <Header loggedUser={loggedUser} />
+            <ProtectedRoute isLogged={isLogged}> 
               <Main
               name="content"
               cards={cards}
@@ -235,21 +235,9 @@ function handleRegister(email, password) {
               />
             </ProtectedRoute>
               } />
-          <Route path="/sign-up" element={
-            <>
-              <Header name="signup" />
-              <Main name="signup" handleRegister={handleRegister}  />
-            </>
-          } />
-          <Route path="/sign-in" element={
-            <>
-              <Header name="signin" />
-              <Main name="signin" handleLogin={handleLogin}  />
-            </>
-          } />
-          <Route path="*" element={
-            <Navigate to={"/"} />
-          } />
+          <Route path="/sign-up" element={<Main name="signup" handleRegister={handleRegister} />} />
+          <Route path="/sign-in" element={<Main name="signin" handleLogin={handleLogin}  />} />
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
         
         <Footer />
